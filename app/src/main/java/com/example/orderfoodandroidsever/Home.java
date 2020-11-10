@@ -67,6 +67,7 @@ public class Home extends AppCompatActivity implements
     RecyclerView recyclerView_menu;
     RecyclerView.LayoutManager layoutManager;
     DrawerLayout drawer;
+    Button btnTestGit;
 
     //add new menu layout
     Button btn_select, btn_upload;
