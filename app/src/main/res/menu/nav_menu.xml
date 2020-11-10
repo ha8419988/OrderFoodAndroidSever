@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/ic_baseline_fastfood_24"
+            android:id="@+id/nav_menu"
+            android:iconTint="#FDFDFD"
+            android:title="Thực Đơn" />
+        <item
+            android:icon="@drawable/ic_baseline_assignment_ind_24"
+            android:iconTint="#FDFDFD"
+            android:id="@+id/nav_shipper"
+            android:title="Quản Lý Shipper" />
+        <item
+            android:icon="@drawable/nav_order"
+            android:iconTint="#FDFDFD"
+            android:id="@+id/nav_order"
+            android:title="Đơn Đã Đặt" />
+        <item
+            android:icon="@drawable/log_out"
+            android:iconTint="#FDFDFD"
+            android:id="@+id/nav_log_out"
+            android:title="Đăng Xuất" />
+    </group>
+
+</menu>

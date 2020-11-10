@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">OrderFoodAndroidSever</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_tracking_order">Map</string>
+    <string name="ban_can_bat_face_id">Bạn cần bật tính năng nhận diện bằng vân tay</string>
+    <string name="google_geo_key">demo</string>
+</resources>

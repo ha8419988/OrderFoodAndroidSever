@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/b2">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_shape"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/edt_sdt"
+            android:layout_width="match_parent"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/stroke_edittext"
+            android:hint="Nhập SĐT"
+            android:inputType="phone"
+            android:padding="8dp"
+            android:text="0124"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edt_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/stroke_edittext"
+            android:hint="Nhập Password"
+            android:inputType="textPassword"
+            android:padding="8dp"
+            android:text="11"
+            app:layout_constraintEnd_toEndOf="@id/edt_sdt"
+            app:layout_constraintStart_toStartOf="@id/edt_sdt"
+            app:layout_constraintTop_toBottomOf="@id/edt_sdt" />
+
+        <Button
+            android:id="@+id/btn_signin1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_shape"
+            android:text="Đăng Nhập"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edt_password" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_fingerprint"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_baseline_fingerprint_24"
+            app:layout_constraintEnd_toEndOf="@id/btn_signin1"
+            app:layout_constraintStart_toStartOf="@id/btn_signin1"
+            app:layout_constraintTop_toBottomOf="@id/btn_signin1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
