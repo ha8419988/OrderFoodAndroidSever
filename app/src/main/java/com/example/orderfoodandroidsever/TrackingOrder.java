@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,10 +40,16 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,14 +78,19 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
     private static int UPDATE_INTERVAL = 1000;
     private static int FATEST_INTERVAL = 5000;
     private static int DISPLACEMENT = 10;
-
+    DatabaseReference locationShipper,locationShipperPhone;
     private IGeoCoodinates mService;
-
+    String phoneShip;
+    float hue=200;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracking_order);
 
+        locationShipper = FirebaseDatabase.getInstance().getReference("LocationShiper");
+
+
+        Log.d("hoann", "onCreate: "+ phoneShip);
         mService = Common.getIGeoCoodinates();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -139,13 +151,60 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestRuntimePermission();
         } else {
+
+            locationShipperPhone = FirebaseDatabase.getInstance().getReference(Common.current_request.getPhone());
+
+            locationShipperPhone.child(Common.current_request.getTimeStamp()).child("phoneShip").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    phoneShip = dataSnapshot.getValue().toString();
+                    Log.d("hoannn", "displayLocation: "+phoneShip);
+                    locationShipper.child(phoneShip).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            final String[] latitude = new String[1];
+                            final String[] longitude = new String[1];
+                            latitude[0] = dataSnapshot.child("lat").getValue().toString();
+                            longitude[0] = dataSnapshot.child("lng").getValue().toString();
+                            Log.d("hoannn", "displayLocationhahaha: "+latitude[0]);
+                            Log.d("hoannn", "displayLocationhahaha: "+dataSnapshot.getValue().toString());
+
+                            LatLng yourLocation1 = new LatLng(Double.parseDouble(latitude[0]), Double.parseDouble(longitude[0]));
+//                            BitmapDescriptor bd=BitmapDescriptorFactory.fromResource(R.drawable.ic_baseline_location_on_24);
+
+                            mMap.addMarker(new MarkerOptions().position(yourLocation1).title("Vị trí của Ship ")
+                                    .icon(BitmapDescriptorFactory.defaultMarker(hue)));//lat :vĩ độ,lng:king độ
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+       //
+            Log.d("hoannn", "displayLocationhahaha: "+phoneShip);
+            if (phoneShip!=null){
+
+            }
+
             if (mLastLocation != null) {
-                double latitude = mLastLocation.getLatitude();
-                double longitude = mLastLocation.getLongitude();
+
                 //Thêm vị trí đánh dáu của bạn và chuyển tới Camera
-                LatLng yourLocation = new LatLng(latitude, longitude);
+                LatLng yourLocation = new LatLng(20.9798983, 105.7872917);
+
                 mMap.addMarker(new MarkerOptions().position(yourLocation).title("Vị trí của Bạn "));//lat :vĩ độ,lng:king độ
+
+
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));//camera là màn hình nhìn(màn hình mình đến Yourlocation)
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
                 //sau khi them vi tri cua ban,ta thêm vị trí cho ĐƠN HÀNG va Ve Tuyen Duong

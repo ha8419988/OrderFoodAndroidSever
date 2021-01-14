@@ -40,6 +40,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -54,7 +55,9 @@ public class OrderStatus extends AppCompatActivity {
     DatabaseReference requests;
     MaterialSpinner spinner, shipper_Spiner;
     APIService mService;
-
+    String phoneShip;
+    String phoneOder;
+    String timeStamp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +86,9 @@ public class OrderStatus extends AppCompatActivity {
                 viewHolder.txtOrderStatus.setText(Common.convertCodeToStatus(model.getStatus()));
                 viewHolder.txtOrderPhone.setText(model.getPhone());
                 viewHolder.txtOrderAddress.setText(model.getAddress());
+                timeStamp =  model.getTimeStamp();
                 viewHolder.txtOrderDate.setText("Thời Gian Đặt Hàng: " + Common.getDate(Long.parseLong(adapter.getRef(position).getKey())));
+                phoneOder = model.getPhone();
 
                 //bắt sự kiện cho Button
                 viewHolder.btn_edit.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +120,7 @@ public class OrderStatus extends AppCompatActivity {
                     public void onClick(View view) {
                         Intent intent = new Intent(OrderStatus.this, TrackingOrder.class);
                         Common.current_request = model;
+                        Log.d("hoannnn", "onClick: " + phoneShip);
                         startActivity(intent);
                     }
                 });
@@ -188,7 +194,13 @@ public class OrderStatus extends AppCompatActivity {
                     requests.child(localKey).setValue(item);
                     sendOrderStatusToUser(localKey, item);
                     sendOrderStatusToShipper(shipper_Spiner.getItems().get(shipper_Spiner.getSelectedIndex()).toString(), item);
+                    Log.d("hoannnnnn", "onClick: "+shipper_Spiner.getItems().get(shipper_Spiner.getSelectedIndex()).toString());
 
+                    phoneShip = ""+shipper_Spiner.getItems().get(shipper_Spiner.getSelectedIndex()).toString();
+                    DatabaseReference phoneShipRef = FirebaseDatabase.getInstance().getReference(phoneOder);
+                    HashMap<String,String> hashMap = new HashMap<>();
+                    hashMap.put("phoneShip", phoneShip);
+                    phoneShipRef.child(timeStamp).setValue(hashMap);
                 } else {
                     adapter.notifyDataSetChanged();
                     requests.child(localKey).setValue(item);
